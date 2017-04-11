@@ -16,12 +16,28 @@ bool is_assigned(csp *c)
 }
 int pick_unassigned_variable(csp *c)
 {
-	int i,n = c->no_nodes;
+	int i,n = c->no_nodes,count,max=INT_MIN,var;
 	for(i=0;i<n;i++)
 	{
+		count=0;
 		if(c->assignment[i]==-1)
-			return i;
+		{
+			vector<int>::iterator neighbours;
+			for(neighbours=c->adjacent[i].begin();neighbours!=c->adjacent[i].end();neighbours++)
+			{
+				if(c->assignment[*neighbours]==-1)
+				{
+					count++;
+				}
+			}	
+			if(count>max)
+			{
+				max = count;
+				var = i;
+			}
+		}
 	}
+	return var;
 
 }
 void backtracking(csp *c)
